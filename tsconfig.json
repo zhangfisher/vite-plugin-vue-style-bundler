@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/jsconfig",
+  "include": [
+    "src/**/*.ts" 
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "target": "ES2021",
+    "lib": ["ES2021", "DOM"],
+    "baseUrl": ".",
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports":true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "rootDirs": ["src"]
+  }
+}

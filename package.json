@@ -1,0 +1,35 @@
+{
+  "name": "vite-plugin-vue-style-bundler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "remove": "^0.1.5"
+  },
+  "devDependencies": {
+    "@types/less": "^3.0.6",
+    "@types/sass": "^1.45.0",
+    "less": "^4.2.0",
+    "sass": "^1.72.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.2",
+    "vite-plugin-inspect": "^0.8.3",
+    "vue": "^3.4.21"
+  },
+  "peerDependencies": {
+    "@types/less": "^3.0.6",
+    "@types/sass": "^1.45.0",
+    "less": "^4.2.0",
+    "sass": "^1.72.0",
+    "vue": "^3.4.21"
+  }
+}
