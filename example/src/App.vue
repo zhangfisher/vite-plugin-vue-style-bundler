@@ -14,8 +14,21 @@ import MyCard3 from './components/Card3.vue'
     <MyCard2 title="SpeedForm" content="SpeedForm是一款React表单开发库"/>
     <MyCard3 title="SpeedForm" content="SpeedForm是一款React表单开发库"/>
 
+    <button @click="handleClick">点击</button>
+
   </div>
  </template>
+<script lang="ts">
+
+
+export default {
+  methods: {
+    handleClick() {
+      console.log('click')
+    }
+  }
+}
+</script>
 
 <style scoped>
 .logo {

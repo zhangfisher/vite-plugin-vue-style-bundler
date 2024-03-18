@@ -1,13 +1,25 @@
 {
   "name": "vite-plugin-vue-style-bundler",
   "version": "1.0.0",
-  "description": "",
+  "description": "`Automatically extract the `css` in `Vue` components and bundle them into the `js` source code, and then automatically insert the style into the head at runtime.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "git+"
+  },
   "scripts": {
     "build": "tsup"
   },
+  "files": [
+    "dist",
+    "LICENSE",
+    "readme.md",
+    "readme_CN.md"
+
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,17 +29,14 @@
   },
   "devDependencies": {
     "@types/less": "^3.0.6",
-    "@types/sass": "^1.45.0",
     "less": "^4.2.0",
     "sass": "^1.72.0",
     "tsup": "^8.0.2",
     "typescript": "^5.4.2",
-    "vite-plugin-inspect": "^0.8.3",
-    "vue": "^3.4.21"
+    "vite-plugin-inspect": "^0.8.3" 
   },
   "peerDependencies": {
     "@types/less": "^3.0.6",
-    "@types/sass": "^1.45.0",
     "less": "^4.2.0",
     "sass": "^1.72.0",
     "vue": "^3.4.21"

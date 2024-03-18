@@ -9,7 +9,11 @@ export interface StyleBundlerOptions{
     sassOptions?:any
 }
 
-export default (options:StyleBundlerOptions={})=>{
+export default (options?:StyleBundlerOptions)=>{
+    const opts = Object.assign({
+        lessOptions:{},
+        sassOptions:{}
+    },options)
     return {        
         name: 'vue-style-bundler',
         enforce:"pre",
@@ -27,10 +31,10 @@ export default (options:StyleBundlerOptions={})=>{
                 for(const [props,css] of styles){
                     const styleId =typeof(props.bundle)=='string' ? props.bundle : fileId
                     if(props.lang=='less'){
-                        const compiledCss = await less(css,options.lessOptions)
+                        const compiledCss = await less(css,opts.lessOptions)
                         newCode = injectCodeToSetup(newCode,{styleId,props,css:compiledCss})
                     }else if(['sass','scss'].includes(props.lang as string)){
-                        const compiledCss = await sass(css,options.sassOptions)
+                        const compiledCss = await sass(css,opts.sassOptions)
                         newCode = injectCodeToSetup(newCode,{styleId,props,css:compiledCss})
                     }else{
                         newCode = injectCodeToSetup(newCode,{styleId,props,css})
@@ -44,5 +48,4 @@ export default (options:StyleBundlerOptions={})=>{
     } as any 
 }
 
-
-export * from "./injector"
+ 

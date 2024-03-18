@@ -1,11 +1,14 @@
 # vite-plugin-vue-style-bundler
 
-实现将`Vue`组件中的`css`样式一起打包到`js`代码中，然后在运行时将`style`自动插入到`head`的`vite`插件。
+[中文](./readme_CN.md) | [英文](./readme.md)
 
-经过`vite-plugin-vue-style-bundler`处理后，导入组件时就可以不用再导入`css`了。
+开发`Vue`组件时，编译产物由`js`和`css`组成，导入该组件时需要同时导入`js`和`css`。
+
+`vite-plugin-vue-style-bundler`可以实现, 自动提取`Vue`组件中的`css`样式一起打包到`js`源代码中，然后在运行时将`style`自动插入到`head`的`vite`插件。
+这样，经过`vite-plugin-vue-style-bundler`处理后，导入组件时就只需要导入`js`就可以了。
 
 
-# 安装
+## 安装
 
 ```shell
 npm install vite-plugin-vue-style-bundler
@@ -15,7 +18,7 @@ pnpm add vite-plugin-vue-style-bundler
 yarn add vite-plugin-vue-style-bundler
 ```
 
-# 使用方法
+## 使用方法
 
 - **第1步：启用插件**
 
@@ -81,6 +84,26 @@ export default defineConfig({
 ```
 
 
+## 说明
 
+- 插件会在当前`vue`文件的`<script setup>`中自动注入代码。
+- 样式会被注入到`head`的`style`标签中,`style.id`默认是根据当前`vue`文件的路径生成的。也可以通过`<style bundle='styleId'>`来指定`style.id`。
+- 如果需要使用`less`或者`sass`，可以在插件配置中添加`lessOptions`或者`sassOptions`。
+- 插件的`enforce="pre"`，这意味插件总是`@vitejs/plugin-vue`之前执行。
 
+## 推荐
 
+- [全流程一健化React/Vue/Nodejs国际化方案 - VoerkaI18n](https://zhangfisher.github.io/voerka-i18n/)
+- [无以伦比的React表单开发库 - speedform](https://zhangfisher.github.io/speed-form/)
+- [终端界面开发增强库 - Logsets](https://zhangfisher.github.io/logsets/)
+- [简单的日志输出库 - VoerkaLogger](https://zhangfisher.github.io/voerkalogger/)
+- [装饰器开发 - FlexDecorators](https://zhangfisher.github.io/flex-decorators/)
+- [有限状态机库 - FlexState](https://zhangfisher.github.io/flexstate/)
+- [通用函数工具库 - FlexTools](https://zhangfisher.github.io/flex-tools/)
+- [小巧优雅的CSS-IN-JS库 - Styledfc](https://zhangfisher.github.io/styledfc/)
+- [为JSON文件添加注释的VSCODE插件 - json_comments_extension](https://github.com/zhangfisher/json_comments_extension)
+- [开发交互式命令行程序库 - mixed-cli](https://github.com/zhangfisher/mixed-cli)
+- [强大的字符串插值变量处理工具库 - flexvars](https://github.com/zhangfisher/flexvars)
+- [前端link调试辅助工具 - yald](https://github.com/zhangfisher/yald)
+- [异步信号 - asyncsignal](https://github.com/zhangfisher/asyncsignal)
+- [Vue树组件 - LiteTree](https://github.com/zhangfisher/lite-tree)
