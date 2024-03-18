@@ -8,32 +8,37 @@
   "homepage": "",
   "repository": {
     "type": "git",
-    "url": "git+"
+    "url": "https://github.com/zhangfisher/vite-plugin-vue-style-bundler"
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "changeset": "changeset",
+    "release": "pnpm build && changeset version && changeset publish"
   },
   "files": [
     "dist",
     "LICENSE",
     "readme.md",
     "readme_CN.md"
-
   ],
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "vue",
+    "vite-plugin-vue"
+  ],
+  "author": "wxzhang",
+  "license": "MIT",
   "dependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
     "remove": "^0.1.5"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "@types/less": "^3.0.6",
-    "less": "^4.2.0",
-    "sass": "^1.72.0",
     "tsup": "^8.0.2",
     "typescript": "^5.4.2",
-    "vite-plugin-inspect": "^0.8.3" 
+    "vite-plugin-inspect": "^0.8.3"
   },
   "peerDependencies": {
     "@types/less": "^3.0.6",
