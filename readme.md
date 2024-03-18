@@ -1,2 +1,2 @@
-# vue-style-bundler
+# vite-plugin-vue-style-bundler
 

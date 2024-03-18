@@ -17,6 +17,8 @@ yarn add vite-plugin-vue-style-bundler
 
 # 使用方法
 
+- **第1步：启用插件**
+
 ```ts
 // vite.config.ts
 import { defineConfig } from 'vite'
@@ -27,11 +29,58 @@ export default defineConfig({
   plugins: [    
     vue(),
     StyleBundler({    
-        // lessOptions:{},
-        // sassOptions:{}
+        // lessOptions:{},  如果需要使用less，可以配置lessOptions
+        // sassOptions:{}   如果需要使用sass，可以配置sassOptions
     }) 
   ],
 })
 
 
 ```
+- **第2步：编写组件**
+
+```vue
+<template>
+  <div class="hello">Hello, {{ msg }}</div>
+</template>
+<style bundle>
+.hello {
+  color: red;
+}
+</style>
+```
+
+当在组件的`style`标签上添加`bundle`属性后，`vite-plugin-vue-style-bundler`插件会对该组件源码进行处理。
+
+```diff
+
+<template>
+  <div class="hello">Hello, {{ msg }}</div>
+</template>
+<script setup>
++   const $insertStylesheet = (id,css)=>{
++        let style = document.getElementById('ho79thw')
++        if(!style){
++            style = document.createElement("style")
++            style.id = 'ho79thw'
++            document.head.appendChild(style)            
++            style.innerHTML = css
++        }
++    }
++    $insertStylesheet(`
++      .hello {
++        color: red;
++      }
++    `)
+</script>
+- <style bundle>
+- .hello {
+-   color: red;
+- }
+- </style>
+```
+
+
+
+
+
