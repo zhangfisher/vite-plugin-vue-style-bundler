@@ -28,9 +28,11 @@ export function parseStyleProps(str:string){
         matched.forEach((match, groupIndex,groups) => {
             const name = groups[1]      
             const value = groups[6]
-            props[name] = value==undefined ? true : value
+            props[name] = value==undefined ? true : value=='true' ? true : value=='false' ? false : value
         });
     }
+    // 默认scoped为true
+    if(props.scoped===undefined) props.scoped = true
     return props
 }
 export type StyleProps =Record<string,string | boolean>
@@ -56,9 +58,12 @@ export function parseStyles(code:string,clean:boolean=true):StyleParseResult{
         if(props.bundle) {
             styles.push([props, css]);    
             if (clean) {  
-                // 如果需要清除样式，使用匹配到的样式标签替换为空字符串  
-                code = code.replace(match[0], '');  
-            }  
+                if(props.scoped){
+                    code = code.replace(match[0], '<style scoped>:v{}</style>');  
+                }else{
+                    code = code.replace(match[0], '');  
+                }                
+            }              
         }        
     }   
     return [code,styles] 

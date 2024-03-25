@@ -1,51 +1,97 @@
-import { injectCodeToSetup, parseStyles } from "./parse"
-import { shortHash } from "./utils"
-import less from "./less"
-import sass from "./sass"
+import { injectCodeToSetup, parseStyles } from "./parse";
+import { shortHash } from "./utils";
+import less from "./less";
+import sass from "./sass";
 
-
-export interface StyleBundlerOptions{
-    lessOptions?:Less.Options
-    sassOptions?:any
+export interface StyleBundlerOptions {
+	lessOptions?: Less.Options;
+	sassOptions?: any;
 }
 
-export default (options?:StyleBundlerOptions)=>{
-    const opts = Object.assign({
-        lessOptions:{},
-        sassOptions:{}
-    },options)
-    return {        
-        name: 'vue-style-bundler',
-        enforce:"pre",
-        async transform(code:string, id:string) {
-            // 1. 只处理.vue文件
-            if (!/.vue$/.test(id)) {
-                return
-            } 
-            // 2. 检查是否有style
-            let [newCode,styles]=parseStyles(code)
-            // 3. 获取需要捆绑的样式
-            if(styles.length>0){
-                const fileId = shortHash(id)
-                // 在<script setup>中插入代码                
-                for(const [props,css] of styles){
-                    const styleId =typeof(props.bundle)=='string' ? props.bundle : fileId
-                    if(props.lang=='less'){
-                        const compiledCss = await less(css,opts.lessOptions)
-                        newCode = injectCodeToSetup(newCode,{styleId,props,css:compiledCss})
-                    }else if(['sass','scss'].includes(props.lang as string)){
-                        const compiledCss = await sass(css,opts.sassOptions)
-                        newCode = injectCodeToSetup(newCode,{styleId,props,css:compiledCss})
-                    }else{
-                        newCode = injectCodeToSetup(newCode,{styleId,props,css})
-                    }                    
+/**
+ * 在一段CSS代码中为所有规则scopeId属性
+ * @param code 
+ * @param id 
+ */
+function insertScopeId(code: string, id: string) {
+    return code.replace(/([\s\S]*?)(\{[\s\S]*?\})/gm, (match, selector, rule) => {
+        const newSelector = selector
+            .split(",")
+            .map((s:string) => s.trim())
+            .map((s:string) => `${s}[data-v-${id}]`)
+            .join(",");
+        return newSelector + rule;
+    });
+}
+/**
+ * 从Vue组件的编译代码中提取scopeId，被保存在['__scopeId',....]中
+ * @param code 
+ */
+function pickScopeId(code:string){
+    const match = /(\'|\")__scopeId\1\s*,\s*(\'|\")(data-v-\w+)\2/gm.exec(code);
+    return match ? match[3] : null;
+}
+
+export default (options?: StyleBundlerOptions) => {
+	const opts = Object.assign(
+		{
+			lessOptions: {},
+			sassOptions: {},
+		},
+		options
+	);
+
+	const scopeIds = new Map<string, string>();
+
+	return [
+		{
+			name: "vue-style-bundler",
+			enforce: "pre",
+			async transform(code: string, id: string) {
+				// 1. 只处理.vue文件
+				if (!/.vue$/.test(id)) {
+					return;
+				}
+				// 2. 检查是否有style
+				let [newCode, styles] = parseStyles(code);
+				// 3. 获取需要捆绑的样式
+				if (styles.length > 0) {
+					const fileId = shortHash(id);
+					// 在<script setup>中插入代码
+					for (const [props, css] of styles) {
+						const styleId = typeof props.bundle == "string" ? props.bundle : fileId;       
+                        let compiledCss = css;                 
+						if (props.lang == "less") {
+							compiledCss = await less(css, opts.lessOptions);
+						} else if (["sass", "scss"].includes(props.lang as string)) {
+							compiledCss = await sass(css, opts.sassOptions);							
+						}  
+                        if(props.scoped){
+                            compiledCss = insertScopeId(compiledCss, styleId);   
+                            scopeIds.set(id, styleId);
+                        }
+                        newCode = injectCodeToSetup(newCode, { styleId, props, css:compiledCss });
+                        
+					}                    
+					return newCode;
+				} else {
+					return code;
+				}
+			},
+		},
+		{
+			name: "vue-style-bundler-post",
+			enforce: "post",
+			async transform(code: string, id: string) {
+                if(scopeIds.has(id)){   
+                    const styleId = scopeIds.get(id);                 
+                    const scopeId = pickScopeId(code);
+                    if(scopeId){
+                        code = code.replace(new RegExp(`data-v-${styleId}`,"g"),scopeId);
+                    }
                 }
-                return newCode
-            }else{
-                return  code
-            }
-        },
-    } as any 
-}
-
- 
+				return code;
+			},
+		},
+	];
+};

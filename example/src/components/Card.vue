@@ -1,5 +1,5 @@
 <template>
-    <div class="my-card">
+    <div class="my-card x y" >
         <div class="title">{{ title }}</div>
         <div class="content">{{ content }}</div>
     </div>
@@ -12,7 +12,7 @@ defineProps({
 })
 </script>
 
-<style bundle>
+<style bundle scoped="false">
     .my-card{
         border:1px solid #ddd;
         box-sizing: border-box;
@@ -28,4 +28,4 @@ defineProps({
         min-height: 80px;
         padding: 8px;
     }
-</style>
+</style> 

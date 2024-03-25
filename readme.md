@@ -88,7 +88,8 @@ When the `bundle` attribute is added to the `style` tag of the component, the `v
 - The plugin automatically injects code into the <script setup> of the current vue file.
 - The styles will be injected into the `style` tag in the document `head`, and the `style.id` is generated based on the path of the current vue file by default. It can also be specified through `<style bundle='styleId'>`.
 - If you need to use less or sass, you can add `lessOptions` or `sassOptions` in the plugin configuration.
-- The plugin's `enforce="pre"` means that the plugin will always execute before `@vitejs/plugin-vue`.
+- By default, the plugin enables the `scoped` mode for `css` in the `<style>` tag, so as to avoid style pollution. If `scoped` mode is not needed, you can set `<style scoped='false'>`.
+
 
 ## Recommendation
 

@@ -89,7 +89,8 @@ export default defineConfig({
 - 插件会在当前`vue`文件的`<script setup>`中自动注入代码。
 - 样式会被注入到`head`的`style`标签中,`style.id`默认是根据当前`vue`文件的路径生成的。也可以通过`<style bundle='styleId'>`来指定`style.id`。
 - 如果需要使用`less`或者`sass`，可以在插件配置中添加`lessOptions`或者`sassOptions`。
-- 插件的`enforce="pre"`，这意味插件总是`@vitejs/plugin-vue`之前执行。
+- 默认情况下插件对`<style>`标签中的`css`启用`scoped`模式，这样可以避免产生样式污染。如果不需要`scoped`模式，可以设置`<style scoped='false'>`
+
 
 ## 推荐
 

@@ -12,7 +12,7 @@ defineProps({
 })
 </script>
 
-<style bundle="mycard3-style" lang="sass">
+<style bundle="mycard3-style" lang="scss">
     .my-card3{
         border:1px solid #ddd;
         box-sizing: border-box;
