@@ -10,19 +10,24 @@ export interface StyleBundlerOptions {
 
 /**
  * 在一段CSS代码中为所有规则scopeId属性
- * @param code 
+ * @param css 
  * @param id 
  */
-function insertScopeId(code: string, id: string) {
-    return code.replace(/([\s\S]*?)(\{[\s\S]*?\})/gm, (match, selector, rule) => {
-        const newSelector = selector
-            .split(",")
-            .map((s:string) => s.trim())
-            .map((s:string) => `${s}[data-v-${id}]`)
-            .join(",");
-        return newSelector + rule;
-    });
+function insertScopeId(css: string, id: string) {
+    // 正则表达式匹配选择器的基本部分（不包括伪类）和伪类  
+    const regex = /\s*([\.\[\]\-\w\=\@\'\,\:]+)?(\{[\s\S]+?\})/g;        
+    return css.replace(regex, (match:string, rules:string,styles:string) => {  
+        return  rules.split(",").map(r=>{
+            const i = r.indexOf(":")
+            if(i==-1){
+                return r + `[data-v-${id}]`
+            }else{
+                return r.slice(0,i) + `[data-v-${id}]` + r.slice(i)
+            }
+        }).join(",") +styles+"\n"
+    });  
 }
+
 /**
  * 从Vue组件的编译代码中提取scopeId，被保存在['__scopeId',....]中
  * @param code 
