@@ -1,5 +1,11 @@
 # vite-plugin-vue-style-bundler
 
+## 1.0.4
+
+### Patch Changes
+
+- 669508b: fix insert scopeId error
+
 ## 1.0.3
 
 ### Patch Changes
