@@ -9,22 +9,22 @@ export interface StyleBundlerOptions {
 }
 
 /**
- * 在一段CSS代码中为所有规则scopeId属性
+ * 在一段CSS代码中为所有规则注入scope属性
  * @param css 
- * @param id 
+ * @param scopeId 
  */
-function insertScopeId(css: string, id: string) {
-    // 正则表达式匹配选择器的基本部分（不包括伪类）和伪类  
-    const regex = /\s*([\.\[\]\-\w\=\@\'\,\:]+)?(\{[\s\S]+?\})/g;        
-    return css.replace(regex, (match:string, rules:string,styles:string) => {  
+function insertScopeId(css: string, scopeId: string) {
+    const regex = /(?<=\}|^)([^\{\}]+)(?=\{)/gm;        
+    return css.replace(regex, (match:string, rules:string) => {  
         return  rules.split(",").map(r=>{
+            if(r.trim().startsWith("@")) return r
             const i = r.indexOf(":")
             if(i==-1){
-                return r + `[data-v-${id}]`
+                return r + `[data-v-${scopeId}]`
             }else{
-                return r.slice(0,i) + `[data-v-${id}]` + r.slice(i)
+                return r.slice(0,i) + `[data-v-${scopeId}]` + r.slice(i)
             }
-        }).join(",") +styles+"\n"
+        }).join(",")  
     });  
 }
 
