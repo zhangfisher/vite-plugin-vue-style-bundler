@@ -17,12 +17,13 @@ function insertScopeId(css: string, scopeId: string) {
     const regex = /(?<=\}|^)([^\{\}]+)(?=\{)/gm;        
     return css.replace(regex, (match:string, rules:string) => {  
         return  rules.split(",").map(r=>{
-            if(r.trim().startsWith("@")) return r
+			r=r.trim()
+            if(r.startsWith("@")) return r
             const i = r.indexOf(":")
             if(i==-1){
-                return r + `[data-v-${scopeId}]`
+                return "\n"+r + `[data-v-${scopeId}]`
             }else{
-                return r.slice(0,i) + `[data-v-${scopeId}]` + r.slice(i)
+                return "\n"+r.slice(0,i) + `[data-v-${scopeId}]` + r.slice(i)
             }
         }).join(",")  
     });  
