@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [    
     vue(),    
     Inspect(),
-    StyleBundler(),
+    StyleBundler()
   ],
   build:{    
     sourcemap:true,    

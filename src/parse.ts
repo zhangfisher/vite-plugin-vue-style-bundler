@@ -58,11 +58,13 @@ export function parseStyles(code:string,clean:boolean=true):StyleParseResult{
         if(props.bundle) {
             styles.push([props, css]);    
             if (clean) {  
-                if(props.scoped){
-                    code = code.replace(match[0], '<style scoped>:v{}</style>');  
-                }else{
-                    code = code.replace(match[0], '');  
-                }                
+                code = code.replace(match[0], '');  
+                // if(props.scoped){
+
+                //     code = code.replace(match[0], '<style scoped>:v{}</style>');  
+                // }else{
+                //     code = code.replace(match[0], '');  
+                // }                
             }              
         }        
     }   
@@ -96,7 +98,6 @@ export function injectCodeToSetup(code:string,{styleId,css}:{styleId:string,prop
     if(matched===null){
         return `<script setup>${injectCode}</script>\n${code}`
     }else{
-        //const s = new MagicString(code)        
         return code.replace(setupScriptRegex,`$1${injectCode}\n$2\n$3`)
     } 
 }
