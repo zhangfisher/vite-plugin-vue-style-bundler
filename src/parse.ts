@@ -78,7 +78,7 @@ const setupScriptRegex = /(\<script\s*.*?\bsetup\s*.*?\>)([\s\S]*?)(\<\/script\s
  * @param props   样式style里面的属性,形式如{scoped:true}等，用来传递参数
  * @param css 
  */
-export function injectCodeToSetup(code:string,{styleId,props,css}:{styleId:string,props:StyleProps,css:string}){
+export function injectCodeToSetup(code:string,{styleId,css}:{styleId:string,props:StyleProps,css:string}){
     
     const matched = setupScriptRegex.exec(code)
     const injectCode = `

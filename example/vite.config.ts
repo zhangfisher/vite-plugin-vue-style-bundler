@@ -5,8 +5,20 @@ import StyleBundler from "../src/index"
 
 export default defineConfig({
   plugins: [    
-    vue(),
+    vue(),    
+    Inspect(),
     StyleBundler(),
-    Inspect()
   ],
+  build:{    
+    sourcemap:true,    
+    minify:false,
+    lib:{
+      entry:"./src/components/Card2.vue",
+      "name":"Card2"      
+    },
+    rollupOptions:{
+      external:['vue']
+    }
+
+  }
 })

@@ -31,7 +31,7 @@ export default {
 </script>
 
 
-<style bundle lang="less" >
+<style bundle lang="less" scope>
 
 .lite-tree-nodes {
   color: #555;

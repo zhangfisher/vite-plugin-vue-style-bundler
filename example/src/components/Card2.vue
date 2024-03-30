@@ -1,6 +1,6 @@
 <template>
     <div class="my-card2">
-        <div class="title">{{ title }}</div>
+        <div class="title" data-x-123>{{ title }}</div>
         <div class="content">{{ content }}</div>
     </div>
 </template>

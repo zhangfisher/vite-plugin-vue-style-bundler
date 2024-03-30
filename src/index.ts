@@ -2,8 +2,7 @@ import { injectCodeToSetup, parseStyles } from "./parse";
 import { shortHash } from "./utils";
 import less from "./less";
 import sass from "./sass";
-import type { PluginOption } from "vite";
-
+import type { Plugin } from "vite"; 
 export interface StyleBundlerOptions {
 	lessOptions?: Less.Options;
 	sassOptions?: any;
@@ -16,6 +15,7 @@ export interface StyleBundlerOptions {
  */
 function insertScopeId(css: string, scopeId: string) {
     const regex = /(?<=\}|^)([^\{\}]+)(?=\{)/gm;        
+	// @ts-ignore
     return css.replace(regex, (match:string, rules:string) => {  
         return  rules.split(",").map(r=>{
 			r=r.trim()
@@ -48,8 +48,8 @@ export default (options?: StyleBundlerOptions) => {
 		options
 	);
 
-	const scopeIds = new Map<string, string>();
-
+	const scopeIds = new Map<string, string>(); 
+	let building:boolean = false
 	return [
 		{
 			name: "vue-style-bundler",
@@ -89,16 +89,26 @@ export default (options?: StyleBundlerOptions) => {
 		{
 			name: "vue-style-bundler-post",
 			enforce: "post",
+			configResolved(config) {   
+				building = config.command === 'build';   
+			},  
 			async transform(code: string, id: string) {
                 if(scopeIds.has(id)){   
                     const styleId = scopeIds.get(id);                 
                     const scopeId = pickScopeId(code);
                     if(scopeId){
                         code = code.replace(new RegExp(`data-v-${styleId}`,"g"),scopeId);
-                    }
-                }
+						if(building){
+							code=code.replace(/\s*_hoisted_\d\s*\=\s*\{/gm,(matched:string)=>{
+								return `${matched}\n"${scopeId}":"",\n`
+							})
+						}
+                    }										
+                } 
 				return code;
 			},
 		},
-	] as PluginOption[];
+	] as Plugin[];
 };
+
+
