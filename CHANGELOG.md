@@ -1,5 +1,11 @@
 # vite-plugin-vue-style-bundler
 
+## 1.0.5
+
+### Patch Changes
+
+- cd68b8c: add plugin ts-type
+
 ## 1.0.4
 
 ### Patch Changes

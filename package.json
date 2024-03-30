@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-vue-style-bundler",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "`Automatically extract the `css` in `Vue` components and bundle them into the `js` source code, and then automatically insert the style into the head at runtime.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -38,6 +38,7 @@
     "@types/less": "^3.0.6",
     "tsup": "^8.0.2",
     "typescript": "^5.4.2",
+    "vite": "^5.2.7",
     "vite-plugin-inspect": "^0.8.3"
   },
   "peerDependencies": {
