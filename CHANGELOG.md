@@ -1,5 +1,11 @@
 # vite-plugin-vue-style-bundler
 
+## 1.0.6
+
+### Patch Changes
+
+- 059233e: fix scopeId lose on build mode
+
 ## 1.0.5
 
 ### Patch Changes
