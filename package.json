@@ -17,6 +17,7 @@
   },
   "files": [
     "dist",
+    "src",
     "LICENSE",
     "readme.md",
     "readme_CN.md"
@@ -31,6 +32,7 @@
   "license": "MIT",
   "dependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
+    "magic-string": "^0.30.8",
     "remove": "^0.1.5"
   },
   "devDependencies": {

@@ -2,11 +2,11 @@ import { injectCodeToSetup, parseStyles } from "./parse";
 import { shortHash } from "./utils";
 import less from "./less";
 import sass from "./sass";
-import type { Plugin } from "vite"; 
+import type { PluginOption } from "vite"; 
 export interface StyleBundlerOptions {
 	lessOptions?: Less.Options;
 	sassOptions?: any;
-}
+} 
 
 /**
  * 在一段CSS代码中为所有规则注入scope属性
@@ -47,9 +47,8 @@ export default (options?: StyleBundlerOptions) => {
 		},
 		options
 	);
-
 	const scopeIds = new Map<string, string>(); 
-	let building:boolean = false
+	// let building:boolean = false
 	return [
 		{
 			name: "vue-style-bundler",
@@ -67,18 +66,19 @@ export default (options?: StyleBundlerOptions) => {
 					// 在<script setup>中插入代码
 					for (const [props, css] of styles) {
 						const styleId = typeof props.bundle == "string" ? props.bundle : fileId;       
-                        let compiledCss = css;                 
+						let compiledCss = css;                 
 						if (props.lang == "less") {
 							compiledCss = await less(css, opts.lessOptions);
 						} else if (["sass", "scss"].includes(props.lang as string)) {
 							compiledCss = await sass(css, opts.sassOptions);							
 						}  
-                        if(props.scoped){
-                            compiledCss = insertScopeId(compiledCss, styleId);   
-                            scopeIds.set(id, styleId);
-                        }
-                        newCode = injectCodeToSetup(newCode, { styleId, props, css:compiledCss });
-                        
+						if(props.scoped){
+							// 此时template还没有被编译，无法得到scopeId，先用styleId代替
+							compiledCss = insertScopeId(compiledCss, styleId);   
+							scopeIds.set(id, styleId);
+						}
+						newCode = injectCodeToSetup(newCode, { styleId, props, css:compiledCss });
+						
 					}                    
 					return newCode;
 				} else {
@@ -89,26 +89,24 @@ export default (options?: StyleBundlerOptions) => {
 		{
 			name: "vue-style-bundler-post",
 			enforce: "post",
-			configResolved(config) {   
-				building = config.command === 'build';   
-			},  
+			// configResolved(config:ResolvedConfig) {   
+			// 	//building = config.command === 'build';   
+			// },  
 			async transform(code: string, id: string) {
-                if(scopeIds.has(id)){   
-                    const styleId = scopeIds.get(id);                 
-                    const scopeId = pickScopeId(code);
-                    if(scopeId){
-                        code = code.replace(new RegExp(`data-v-${styleId}`,"g"),scopeId);
-						if(building){
-							code=code.replace(/\s*_hoisted_\d\s*\=\s*\{/gm,(matched:string)=>{
-								return `${matched}\n"${scopeId}":"",\n`
-							})
-						}
-                    }										
-                } 
+				if(scopeIds.has(id.split("?")[0])){   
+					const styleId = scopeIds.get(id) || '';                 
+					const scopeId = pickScopeId(code);
+					if(scopeId){
+						code = code.replace(new RegExp(`data-v-\w+`,"g"),styleId);
+						// if(building){
+						// 	code=code.replace(/\s*_hoisted_[\w\$\d]+\s*\=\s*\{/gm,(matched:string)=>{
+						// 		return `${matched}\n"${scopeId}":"",\n`
+						// 	})
+						// }
+					}										
+				} 		
 				return code;
 			},
 		},
-	] as Plugin[];
-};
-
-
+	]  as PluginOption
+}; 

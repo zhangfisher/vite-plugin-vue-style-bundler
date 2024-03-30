@@ -13,7 +13,7 @@ export default defineConfig({
     sourcemap:true,    
     minify:false,
     lib:{
-      entry:"./src/components/Card2.vue",
+      entry:"./src/App.vue",
       "name":"Card2"      
     },
     rollupOptions:{

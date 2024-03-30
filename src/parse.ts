@@ -1,4 +1,4 @@
-
+//import MagicString from "magic-string";
 // 匹配样式样式块, 必须有bundle
 const styleRegex = /\<style(.*?)\>([\s\S]*?)\<\/style\>/gm
 const stylePropsRegex = /\b(\w+)(\s*(\=)\s*(([\"\'])(.*?)\5)?)?/gm
@@ -96,6 +96,7 @@ export function injectCodeToSetup(code:string,{styleId,css}:{styleId:string,prop
     if(matched===null){
         return `<script setup>${injectCode}</script>\n${code}`
     }else{
+        //const s = new MagicString(code)        
         return code.replace(setupScriptRegex,`$1${injectCode}\n$2\n$3`)
     } 
 }
