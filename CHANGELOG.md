@@ -1,5 +1,12 @@
 # vite-plugin-vue-style-bundler
 
+## 1.0.7
+
+### Patch Changes
+
+- 0c5fd71: fix scope
+- 848e279: 重构 scope 生成机制
+
 ## 1.0.6
 
 ### Patch Changes
