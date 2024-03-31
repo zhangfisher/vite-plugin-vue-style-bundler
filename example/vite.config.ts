@@ -5,9 +5,9 @@ import StyleBundler from "../src/index"
 
 export default defineConfig({
   plugins: [    
-    vue(),    
-    Inspect(),
-    StyleBundler()
+    vue(),
+    StyleBundler(),    
+    Inspect()
   ],
   build:{    
     sourcemap:true,    

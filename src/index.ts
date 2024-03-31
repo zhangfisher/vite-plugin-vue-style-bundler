@@ -2,6 +2,7 @@ import { injectCodeToSetup, parseStyles } from "./parse";
 import { shortHash } from "./utils";
 import less from "./less";
 import sass from "./sass";  
+import type { PluginOption } from "vite"
 export interface StyleBundlerOptions {
 	lessOptions?: Less.Options;
 	sassOptions?: any;
@@ -81,5 +82,5 @@ export default (options?: StyleBundlerOptions) => {
 				return code;
 			}
 		},
-	}   
+	}   as PluginOption
 }; 
