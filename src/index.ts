@@ -2,9 +2,9 @@ import { injectCodeToSetup, parseStyles } from "./parse";
 import { shortHash } from "./utils";
 import less from "./less";
 import sass from "./sass";  
-import type { PluginOption } from "vite"
+import type { Plugin } from "vite"
 export interface StyleBundlerOptions {
-	lessOptions?: Less.Options;
+	lessOptions?: any;
 	sassOptions?: any;
 } 
 
@@ -39,7 +39,7 @@ function injectScopeId(code: string, scopeId: string) {
 	})
 }
 
-export default (options?: StyleBundlerOptions) => {
+export default (options?: StyleBundlerOptions):Plugin => {
 	const opts = Object.assign(
 		{
 			lessOptions: {},
@@ -47,6 +47,7 @@ export default (options?: StyleBundlerOptions) => {
 		},
 		options
 	);
+
 	return {
 		name: "vue-plugin-vue-style-bundler",
 		enforce: "pre",
@@ -82,5 +83,7 @@ export default (options?: StyleBundlerOptions) => {
 				return code;
 			}
 		},
-	}   as PluginOption
+	}  
 }; 
+
+ 
