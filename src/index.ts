@@ -3,6 +3,7 @@ import { shortHash } from "./utils";
 import less from "./less";
 import sass from "./sass";  
 import type { Plugin } from "vite"
+import path from "path"
 export interface StyleBundlerOptions {
 	lessOptions?: any;
 	sassOptions?: any;
@@ -66,9 +67,23 @@ export default (options?: StyleBundlerOptions):Plugin => {
 					const styleId = typeof props.bundle == "string" ? props.bundle : fileId;       
 					let compiledCss = css;                 
 					if (props.lang == "less") {
-						compiledCss = await less(css, opts.lessOptions);
+						try{
+							compiledCss = await less(css, Object.assign({
+								syncImport:true,
+								rootPath:path.dirname(id),
+								paths:path.dirname(id)
+							},opts.lessOptions));
+						}catch(e){
+							console.error("Error while compile less:",e)
+							throw e
+						}						
 					} else if (["sass", "scss"].includes(props.lang as string)) {
-						compiledCss = await sass(css, opts.sassOptions);							
+						try{
+							compiledCss = await sass(css, opts.sassOptions);							
+						}catch(e){
+							console.error("Error while compile sass:",e)
+							throw e
+						}						
 					}  
 					if(props.scoped){
 						// 此时template还没有被编译，无法得到scopeId，先用styleId代替
