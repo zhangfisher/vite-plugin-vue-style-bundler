@@ -31,6 +31,6 @@ export default {
 </script>
 
 
-<style bundle lang="less" scope>
+<style bundle lang="less" scoped="false">
 @import '../tree.less';
 </style>  
