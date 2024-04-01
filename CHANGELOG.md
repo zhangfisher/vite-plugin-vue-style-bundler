@@ -1,5 +1,11 @@
 # vite-plugin-vue-style-bundler
 
+## 1.0.8
+
+### Patch Changes
+
+- 94947fc: fix types error
+
 ## 1.0.7
 
 ### Patch Changes
