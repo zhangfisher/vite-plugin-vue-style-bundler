@@ -1,5 +1,11 @@
 # vite-plugin-vue-style-bundler
 
+## 1.0.9
+
+### Patch Changes
+
+- 2df9d79: fix less compile error when use @import
+
 ## 1.0.8
 
 ### Patch Changes
